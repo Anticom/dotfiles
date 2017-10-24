@@ -1,0 +1,4 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/home/anticom/src/git/madl/gastrocontrol/app/gastrocontrol/src/app/@theme/layouts'
+let g:netrw_dirhist_2='/home/anticom'

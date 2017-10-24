@@ -1,0 +1,46 @@
+- defaults:
+    link:
+      #create: true
+      relink: true
+      #realtive: true
+
+- clean: ['~']
+
+- link:
+    ### DIRECTORIES ###
+    ~/.dotfiles: ''
+    ~/.bash_completion.d: 'bash_completion.d'
+    ~/bin: 'bin'
+
+    ###    FILES    ###
+    ~/.bash_aliases: 'bash_aliases'
+    ~/.bash_completion: 'bash_completion'
+    ~/.bash_logout: 'bash_logout'
+    ~/.bash_ps: 'bash_ps'
+    ~/.bashrc: 'bashrc'
+    ~/.dircolors: 'dircolors'
+    # ~/.dockerrc: 'dockerrc'
+    ~/.gitconfig: 'gitconfig'
+    ~/.gitignore_global: 'gitignore_global'
+    ~/src/git/bitbucket/.gitconfig: 'gitconfig.d/bitbucket'
+    ~/src/git/fbihome/.gitconfig: 'gitconfig.d/fbihome'
+    ~/src/git/gin/.gitconfig: 'gitconfig.d/gin'
+    ~/src/git/github/.gitconfig: 'gitconfig.d/github'
+    ~/src/git/madl/.gitconfig: 'gitconfig.d/madl'
+    ~/.inputrc: 'inputrc'
+    ~/.profile: 'profile'
+    ~/.tmux.conf: tmux.conf
+    ~/.vim: vim
+    ~/.vimrc: vimrc
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [mkdir -p ~/src, Creating src directory]
+  - [mkdir -p ~/src/git, Creating src directory]
+  - mkdir -p ~/src/git/bitbucket
+  - mkdir -p ~/src/git/fbihome
+  - mkdir -p ~/src/git/gin
+  - mkdir -p ~/src/git/github
+  - mkdir -p ~/src/git/madl
+  - mkdir -p ~/src/svn
+  - mkdir -p ~/src/test

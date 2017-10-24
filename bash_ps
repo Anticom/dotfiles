@@ -1,0 +1,222 @@
+#!/bin/bash
+
+function modular_promt_builder {
+    local exit_code="$?"
+
+    #config
+    local enable_time=true
+    local enable_time_delta=false
+    local enable_hostinfo=false
+    local enable_breadcrumb=true
+    local enable_gitinfo=true
+    local enable_svninfo=false
+    local enable_exitinfo=true
+    local enable_prompt=true
+    
+    #formatting definitions 
+    local fmts="\[\033["
+    local fmte="\]"
+
+    #default format (--> reset / default)
+    local fmt="${fmts}00m${fmte}"
+
+    local fmt_STRONG="${fmts}1m${fmte}"
+    local fmt_DIM="${fmts}37m${fmte}"
+    local fmt_GRP="${fmts}90m${fmte}"
+
+    local fmt_OK="${fmts}92m${fmte}"
+    local fmt_INFO="${fmts}96m${fmte}"
+    local fmt_WARN="${fmts}93m${fmte}"
+    local fmt_ERROR="${fmts}91m${fmte}"
+    local fmt_FATAL="${fmts}1;97;41m${fmte}"
+
+    #local fmt_user="${fmts}38;5;11m${fmte}"
+    #local fmt_host="${fmts}38;5;10m${fmte}"
+    local fmt_user="${fmts}38;5;202m${fmte}"
+    local fmt_host="${fmts}38;5;48m${fmte}"
+    local fmt_breadcrumb="${fmts}38;5;6m${fmte}"
+    local fmt_repo_name="${fmts}94m${fmte}"
+    #local fmt_repo_branch="${fmts}[35m${fmte}"
+    #formatting definitions end
+
+    #set to 0 to disable
+    local breadcrumb_trunkate_if_longer_then=10
+    
+    local enclosure_start="${fmt_GRP}[${fmt}"
+    local enclosure_end="${fmt_GRP}]${fmt}"
+    #config end
+
+    ##### BUILDING PS1 #####
+    local ps1_builder=()
+    
+    #time
+    if "$enable_time"; then
+        ps1_builder+=("${fmt_GRP}\A")
+    fi
+    #time end
+    
+    #time delta
+    if "$enable_time_delta"; then
+        export date_last=$(date +%s)
+        local date_now=$(date +%s)
+        local time_delta=$(($date_now - $date_last))
+        ps1_builder+=("${fmt_GRP}Δ${time_delta}s")
+    fi
+    #time delta end
+
+    #user
+    if "$enable_hostinfo"; then
+        local user="${fmt_user}\u"
+        local at="${fmt_DIM}@"
+        local host="${fmt_host}\h"
+
+        local tmp="$user$at$host"
+        
+        if [ -n "$SSH_CLIENT" ]; then
+            tmp+=" ${fmt_WARN}(remote)"
+        fi
+        
+        ps1_builder+=("$tmp")
+
+    fi
+    #user end
+
+    #breadcrumb
+    if "$enable_breadcrumb"; then
+        local breadcrumb="${fmt_breadcrumb}\w"
+
+        #if [[ $breadcrumb_trunkate_if_longer_then -ne 0 && $breadcrumb_size -gt $breadcrumb_trunkate_if_longer_then ]]; then
+        #    local breadcrumb_size=${#breadcrumb}
+        #    
+        #    breadcrumb="~/.../\W"
+        #fi
+
+        ps1_builder+=("$breadcrumb")
+    fi
+    #breadcrumb end
+
+    #gitinfo
+    if "$enable_gitinfo"; then
+        if git rev-parse --is-inside-work-tree &> /dev/null; then
+            # "Original" approach from guy where i copied the inspiration from
+            #local git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\\\\\1\\ /`'
+            # "Old" approach using local folder
+            #local git_repo=$(basename "$(git rev-parse --show-toplevel)")
+            # "New" approach using actual remote name
+            #local git_repo=$(basename "$(git ls-remote --get-url origin)" | sed s/.git//)
+            # Now combined
+            local git_repo="UNKOWN"
+            if git config remote.origin.url &> /dev/null; then
+                git_repo=$(basename "$(git ls-remote --get-url origin)" | sed s/.git//)
+            else
+                git_repo=$(basename "$(git rev-parse --show-toplevel)")
+            fi
+
+            #local git_branch='UNINITIALIZED'
+            #if git rev-parse --quiet --verify HEAD >/dev/null 2>&1; then
+            #    git_branch=$(git rev-parse --abbrev-ref HEAD)
+            #fi
+            #local git_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+            local git_branch=$(git symbolic-ref HEAD 2> /dev/null | sed "s/refs\/heads\///")
+            
+            local git_branch_fmt="${fmt}"
+            case "$git_branch" in
+                master)
+                    git_branch_fmt="${fmt_ERROR}"
+                    ;;
+                develop|dev)
+                    git_branch_fmt="${fmt_INFO}"
+                    ;;
+                feature/*)
+                    git_branch_fmt="${fmt_OK}"
+                    ;;
+                release/*)
+                    git_branch_fmt="${fmt_WARN}"
+                    ;;
+                hotfix/*)
+                    git_branch_fmt="${fmt_WARN}"
+                    ;;
+                support/*)
+                    git_branch_fmt="${fmt_STRONG}${fmt_INFO}"
+                    ;;
+                svn/*)
+                    git_branch_fmt="${fmt_WARN}"
+                    ;;
+                UNINITIALIZED)
+                    git_branch_fmt="${fmt_WARN}"
+                    ;;
+                *)
+                    git_branch_fmt="${fmt_FATAL}"
+                    ;;
+            esac
+
+            ps1_builder+=("${git_branch_fmt}$git_branch${fmt}${fmt_DIM}@${fmt_repo_name}$git_repo")
+        fi
+    fi
+    #gitinfo end
+
+    #svninfo
+    if "$enable_svninfo"; then
+        if svn info &> /dev/null; then
+            local svn_repo=$(basename "$(svn info | grep ^URL | sed  's/URL: //g')")
+            local svn_branch=$(svn info | grep '^URL:' | egrep -o '(tags|branches)/[^/]+|trunk' | egrep -o '[^/]+$')
+            ps1_builder+=("${fmt}${svn_branch}@${svn_repo}")
+        fi
+    fi
+    #svninfo end
+
+    #exitinfo
+    if "$enable_exitinfo"; then
+        local exit_string="$exit_code"
+        #if [[ ${#exit_string} -lt 2 ]]; then
+        #    exit_string=" $exit_string "
+        #elif [[ ${#exit_string} -lt 3 ]]; then
+        #    exit_string=" $exit_string"
+        #fi
+        #local exit_info="${fmt}[\[\033[91m\]✗${fmt}]"
+        local exit_info="${fmt_ERROR}$exit_code"
+        if [[ $exit_code -eq 0 ]]; then
+            #exit_info="${fmt_OK}✓"
+            exit_info="${fmt_OK}0"
+        fi
+
+        ps1_builder+=("$exit_info")
+    fi
+    #exitinfo end
+    
+    #####   SECTION ASSEMBLY   #####
+    
+    #ps1_string=$(printf " %s" "${ps1_builder[@]}")
+    #ps1_string=${ps1_string:1}
+    
+    local ps1_string=""
+    local i=0
+    for section in "${ps1_builder[@]}"; do
+        #ps1_builder[$i]="${enclosure_start}${section}${enclosure_end}"
+        #ps1_string+="${enclosure_start}${section}${enclosure_end}"
+        ps1_string+="${enclosure_start}${section}${enclosure_end}"
+        ((i++))
+    done
+    ps1_string+="${fmt} "
+    ##### SECTION ASSEMBLY END #####
+
+    #promt
+    if "$enable_prompt"; then
+        #local prompt_tail="${fmt_STRONG}\$${fmt}"
+        local prompt_tail="\$"
+
+        ps1_string+="$prompt_tail "
+    fi
+    #promt end
+
+    PS1="$ps1_string"
+    #PS1="$user$at$host$local_or_remote $cur_location $git_info $last_retval $prompt_tail${fmt} "
+
+    export PS2="${fmt_INFO}>${fmt} "
+    export PS3="${fmt_INFO}>${fmt} "
+    export PS4="${fmt_INFO}[\A]${fmt} "
+}
+
+#color_my_prompt
+export PROMPT_COMMAND=modular_promt_builder
+
