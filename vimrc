@@ -12,10 +12,6 @@ Plug 'morhetz/gruvbox'
 " dependencies
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
-" common:
-Plug 'godlygeek/tabular'
-Plug 'honza/vim-snippets'
-
 " tpope:
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -41,7 +37,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 
+" snippets:
+Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
+
 " other:
+Plug 'godlygeek/tabular'
 Plug 'sheerun/vim-polyglot'
 Plug 'mhinz/vim-startify'
 " TODO documentation plugin
@@ -49,7 +50,8 @@ Plug 'kien/ctrlp.vim'
 " Competition for CtrlP
 "Plug 'shougo/unite.vim'
 "Plug 'junegunn/fzf'
-"
+Plug 'airblade/vim-rooter'
+
 Plug 'terryma/vim-multiple-cursors'
 Plug 'airblade/vim-gitgutter'
 "Plug 'nathanaelkane/vim-indent-guides'
