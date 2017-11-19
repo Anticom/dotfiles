@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# source guard
+[[ $_ != $0 ]] && return
+
 set -x
 
 ### docker-compose
