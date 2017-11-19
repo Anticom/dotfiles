@@ -59,6 +59,7 @@ Plug 'yggdroot/indentline'
 Plug 'raimondi/delimitmate'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bronson/vim-trailing-whitespace'
+Plug 'ekalinin/dockerfile.vim'
 
 " TODO
 "Plug 'janko-m/vim-test'
