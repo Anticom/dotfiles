@@ -44,3 +44,4 @@
   - mkdir -p ~/src/git/madl
   - mkdir -p ~/src/svn
   - mkdir -p ~/src/test
+  # TODO: generate bash_completion

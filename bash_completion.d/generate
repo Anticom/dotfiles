@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -x
+
+### docker-compose
+sudo curl -L https://raw.githubusercontent.com/docker/compose/"$(docker-compose version --short)"/contrib/completion/bash/docker-compose -o ./docker-compose
+
+### docker-machine
+# TODO
+#sudo curl -L https://raw.githubusercontent.com/docker/machine/v0.13.0/contrib/completion/bash/docker-machine.bash -o /etc/bash_completion.d/docker-machine
+
+### kubectl
+kubectl completion bash > kubectl
+
+### minikube
+minikube completion bash > minikube
+
+### ng
+ng completion > ng
+
+### npm
+npm completion > npm
+
+### pip3
+pip3 completion -b > pip3
