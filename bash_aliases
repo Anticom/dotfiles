@@ -27,13 +27,15 @@ alias bashconfig='vim ~/.bashrc'
 alias gitconfig='vim ~/.gitconfig'
 alias vimconfig='vim ~/.vimrc'
 
-alias todo='fgrep -rn "TODO" && fgrep -rn "FIXME"'
+alias todo='fgrep -rni "TODO" && fgrep -rni "FIXME"'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 ### ENVIRONMENT
+# TODO add dedicated bash_export
 # colored GCC warnings and errors
 export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 export EDITOR="vim"
+export TF_CPP_MIN_LOG_LEVEL=2   # mute tensorflows speedup suggestions
 
 # for VIM and TMUC
 if [ "$TERM" = "xterm" ]; then

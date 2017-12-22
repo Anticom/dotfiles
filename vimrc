@@ -4,6 +4,10 @@ call plug#begin()
 " guide
 Plug 'sjl/gundo.vim'
 
+" Syntax:
+Plug 'sheerun/vim-polyglot'
+Plug 'justinmk/vim-syntax-extra'
+
 " Mine:
 " colorschemes:
 Plug 'flazz/vim-colorschemes'
@@ -42,15 +46,16 @@ Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 
 " other:
+Plug 'chrisbra/Recover.vim'
 Plug 'godlygeek/tabular'
-Plug 'sheerun/vim-polyglot'
-Plug 'mhinz/vim-startify'
+"Plug 'mhinz/vim-startify'
 " TODO documentation plugin
 Plug 'kien/ctrlp.vim'
 " Competition for CtrlP
 "Plug 'shougo/unite.vim'
 "Plug 'junegunn/fzf'
 Plug 'airblade/vim-rooter'
+Plug 'cespare/vim-toml'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'airblade/vim-gitgutter'
@@ -64,19 +69,22 @@ Plug 'ekalinin/dockerfile.vim'
 " TODO
 "Plug 'janko-m/vim-test'
 
-" webdev:
+" Webdev:
 Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
 
 " Filetype:
 Plug 'leafgarland/typescript-vim'
 
+" Debuggers:
+Plug 'gilligan/vim-lldb'
+
 
 " Initialize plugin system
 call plug#end()
 
 
-" Native vim:
+" Native Vim:
 set shell=/bin/bash
 set encoding=utf-8
 
@@ -84,7 +92,7 @@ set nocompatible
 filetype plugin on
 " TODO get rid of it
 set mouse=a
-" case-insensitivity
+" Case-insensitivity:
 set ignorecase
 set infercase
 set wildignorecase
@@ -117,31 +125,33 @@ set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 
-" turn off search highlight
+" Turn Off Search Highlight:
 nnoremap <leader><space> :nohlsearch<CR>
 
+" Remap JK Keys To Keep Current Line Centered
+" nnoremap j jzz
+" nnoremap k kzz
+
 " Folding:
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
-
+"set foldenable          " enable folding
+"set foldlevelstart=10   " open most folds by default
+"set foldnestmax=10      " 10 nested fold max
 " space open/closes folds
-nnoremap <space> za
+"nnoremap <space> za
+"set foldmethod=indent   " fold based on indent level
 
-set foldmethod=indent   " fold based on indent level
-
-" move to beginning/end of line
+" Move To Beginning/End Of Line:
 nnoremap B ^
 nnoremap E $
 
-" $/^ doesn't do anything
+" $/^ Doesn't Do Anything:
 nnoremap $ <nop>
 nnoremap ^ <nop>
 
-" highlight last inserted text
+" Highlight Last Inserted Text:
 nnoremap gV `[v`]
 
-" Leader Shortcuts
+" Leader Shortcuts:
 let mapleader=","       " leader is comma
 
 " jk is escape
@@ -153,6 +163,9 @@ nnoremap <leader>u :GundoToggle<CR>
 
 
 " ------------------ MINE -----------------
+
+set autoread
+
 " https://jeffkreeftmeijer.com/vim-number/
 :set number relativenumber
 ":set nonumber norelativenumber  " turn hybrid line numbers off
@@ -164,8 +177,16 @@ nnoremap <leader>u :GundoToggle<CR>
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
 
-" ---
 set colorcolumn=80
+
+""" Toggable non-printable characters
+" choose one of the following:
+"set listchars=tab:→\ ,space:·,precedes:«,extends:»,eol:¶
+"set listchars=tab:→\ ,space:␣,extends:…,eol:⏎
+set listchars=tab:‣\ ,space:·,precedes:«,extends:»,eol:¬
+"set listchars=tab:>-,space:.,precedes:<,extends:>,eol:$
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
 
 " Splits:
 " https://robots.thoughtbot.com/vim-splits-move-faster-and-more-naturally
@@ -176,6 +197,18 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" http://vim.wikia.com/wiki/Automatically_open_the_quickfix_window_on_:make
+" Automatically open, but do not go to (if there are errors) the quickfix /
+" location list window, or close it when is has become empty.
+"
+" Note: Must allow nesting of autocmds to enable any customizations for quickfix
+" buffers.
+" Note: Normally, :cwindow jumps to the quickfix window if the command opens it
+" (but not if it's already open). However, as part of the autocmd, this doesn't
+" seem to happen.
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 
 " ---------------------------- Plugins --------------------------
 " Syntastic:
@@ -219,6 +252,16 @@ function! s:CustomizeYcmQuickFixWindow()
   5wincmd _
 endfunction
 autocmd User YcmQuickFixOpened call s:CustomizeYcmQuickFixWindow()
+
+" UltiSnips:
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 " Nerdtree:
 autocmd StdinReadPre * let s:std_in=1

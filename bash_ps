@@ -4,6 +4,7 @@ function modular_promt_builder {
     local exit_code="$?"
 
     #config
+    local enable_battery=false
     local enable_time=true
     local enable_time_delta=false
     local enable_hostinfo=false
@@ -12,8 +13,8 @@ function modular_promt_builder {
     local enable_svninfo=false
     local enable_exitinfo=true
     local enable_prompt=true
-    
-    #formatting definitions 
+
+    #formatting definitions
     local fmts="\[\033["
     local fmte="\]"
 
@@ -41,20 +42,58 @@ function modular_promt_builder {
 
     #set to 0 to disable
     local breadcrumb_trunkate_if_longer_then=10
-    
+
     local enclosure_start="${fmt_GRP}[${fmt}"
     local enclosure_end="${fmt_GRP}]${fmt}"
     #config end
 
     ##### BUILDING PS1 #####
     local ps1_builder=()
-    
+
+    #TODO: finnish
+    #battery
+    if "$enable_battery"; then
+        local bat25="▂"
+        local bat50="▄"
+        local bat75="▆"
+        local bat100="█"
+
+        # determine percentage:
+        local bat=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "percentage" | grep -o -E "[0-9]+" > /dev/null)
+        # determine state: charging / not charging
+        upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "state" | grep "discharging" > /dev/null
+        local isDischarging=$?
+        # determine color: charging->green, else yellow / red
+        local color
+        if "$isDischarging"; then
+            if [ "$bat" -gt 25 ]; then
+                $color=$fmt_WARN
+            else
+                $color=$fmt_ERROR
+            fi
+        else
+            $color=$fmt_OK
+        fi
+
+        #determine icon and render with selected color
+        if [ "$bat" -ge 90 ]; then
+            ps1_builder+=("${color}${bat100}")
+        elif [ "$bat" -ge 70 ]; then
+            ps1_builder+=("${color}${bat75}")
+        elif [ "$bat" -ge 50 ]; then
+            ps1_builder+=("${color}${bat50}")
+        else
+            ps1_builder+=("${color}${bat25}")
+        fi
+    fi
+    #battery end
+
     #time
     if "$enable_time"; then
         ps1_builder+=("${fmt_GRP}\A")
     fi
     #time end
-    
+
     #time delta
     if "$enable_time_delta"; then
         export date_last=$(date +%s)
@@ -71,11 +110,11 @@ function modular_promt_builder {
         local host="${fmt_host}\h"
 
         local tmp="$user$at$host"
-        
+
         if [ -n "$SSH_CLIENT" ]; then
             tmp+=" ${fmt_WARN}(remote)"
         fi
-        
+
         ps1_builder+=("$tmp")
 
     fi
@@ -87,7 +126,7 @@ function modular_promt_builder {
 
         #if [[ $breadcrumb_trunkate_if_longer_then -ne 0 && $breadcrumb_size -gt $breadcrumb_trunkate_if_longer_then ]]; then
         #    local breadcrumb_size=${#breadcrumb}
-        #    
+        #
         #    breadcrumb="~/.../\W"
         #fi
 
@@ -118,7 +157,7 @@ function modular_promt_builder {
             #fi
             #local git_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
             local git_branch=$(git symbolic-ref HEAD 2> /dev/null | sed "s/refs\/heads\///")
-            
+
             local git_branch_fmt="${fmt}"
             case "$git_branch" in
                 master)
@@ -183,12 +222,12 @@ function modular_promt_builder {
         ps1_builder+=("$exit_info")
     fi
     #exitinfo end
-    
+
     #####   SECTION ASSEMBLY   #####
-    
+
     #ps1_string=$(printf " %s" "${ps1_builder[@]}")
     #ps1_string=${ps1_string:1}
-    
+
     local ps1_string=""
     local i=0
     for section in "${ps1_builder[@]}"; do
