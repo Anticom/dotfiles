@@ -53,11 +53,14 @@
 
 [diff]
 	renames = copies
-	tool = vimdiff
+	tool = vdwrap
 
 [difftool]
 	promt = false
 	trustExitCode = true
+
+[difftool "vdwrap"]
+	cmd = vdwrap $LOCAL $REMOTE
 
 [merge]
     #tool = vimdiff
@@ -67,9 +70,6 @@
 [mergetool]
 	promt = false
 	trustExitCode = true
-
-[mergetool "meldold"] 
-    cmd = /usr/bin/meld "$LOCAL" "$MERGED" "$REMOTE"
 
 [pager]
     #diff = diff-highlight | less
@@ -100,7 +100,7 @@
 [alias]
     # Save some precious chars
     a = add
-    
+
     # list aliases:
     la = "!git config -l | grep alias | cut -c 7-"
 
@@ -137,7 +137,9 @@
 
     diff = diff --word-diff
     dbc = difftool
+    dbca = difftool --dir-diff
     dc = difftool --cached
+    dca = difftool --cached --dir-diff
     dlc = difftool --cached HEAD^
     ds = diff --cached HEAD^ --stat
     dr  = "!f() { git diff "$1"^.."$1"; }; f"
@@ -161,7 +163,7 @@
     cl  = clone
     ci  = commit -v
     co  = checkout
-    br  = branch 
+    br  = branch
 
     pl  = pull
 

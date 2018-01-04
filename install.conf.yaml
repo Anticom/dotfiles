@@ -33,6 +33,9 @@
     ~/.vim: vim
     ~/.vimrc: vimrc
 
+    ### INTERNAL LINKAGES ##
+    bin/vdwrap: 'external/vdwrap/vdwrap'
+
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
   - [mkdir -p ~/src, Creating src directory]

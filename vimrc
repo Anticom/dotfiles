@@ -18,10 +18,13 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " tpope:
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 " Conflicts with nerdcommenter
 "Plug 'tpope/vim-commentary'
+
+" Git:
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " syntastic:
 Plug 'vim-syntastic/syntastic'
@@ -58,7 +61,6 @@ Plug 'airblade/vim-rooter'
 Plug 'cespare/vim-toml'
 
 Plug 'terryma/vim-multiple-cursors'
-Plug 'airblade/vim-gitgutter'
 "Plug 'nathanaelkane/vim-indent-guides'
 Plug 'yggdroot/indentline'
 Plug 'raimondi/delimitmate'
@@ -163,6 +165,18 @@ nnoremap <leader>u :GundoToggle<CR>
 
 
 " ------------------ MINE -----------------
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap th  :tabfirst<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+"nnoremap tn  :tabnext<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+" Alternatively use
+"nnoremap th :tabnext<CR>
+"nnoremap tl :tabprev<CR>
+"nnoremap tn :tabnew<CR>
 
 set autoread
 

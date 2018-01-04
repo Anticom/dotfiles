@@ -1,2 +1,5 @@
 # vim plugins must be build on machine individually
+vim/.netrwhist
 vim/plugged
+# Ignore vdwrap, since it's comming from a submodule
+bin/vdwrap

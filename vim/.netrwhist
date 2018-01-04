@@ -1,6 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/home/anticom/src/git/madl/gastrocontrol/app/gastrocontrol/src/app/@theme/layouts'
-let g:netrw_dirhist_2='/home/anticom'
-let g:netrw_dirhist_3='/home/anticom/src/test/bison/calc++'
-let g:netrw_dirhist_4='/home/anticom/src/git/fbihome/cc-michi'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/tmp/git-difftool.ctBztl/left'
+let g:netrw_dirhist_2='/tmp/git-difftool.qmeqAr/left'
+let g:netrw_dirhist_3='/tmp/git-difftool.qmeqAr/right'

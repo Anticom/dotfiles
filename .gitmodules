@@ -1,3 +1,6 @@
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
+[submodule "external/vdwrap"]
+	path = external/vdwrap
+	url = https://github.com/Osse/vdwrap

@@ -8,13 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-### USER MODIFIED
-
-# ensure xterm-256color
-export TERM=xterm-256color
-
-### END USER MODIFIED
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
