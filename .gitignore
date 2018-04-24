@@ -3,3 +3,7 @@ vim/.netrwhist
 vim/plugged
 # Ignore vdwrap, since it's comming from a submodule
 bin/vdwrap
+bin/clion
+bin/idea
+bin/pycharm
+bin/webstorm

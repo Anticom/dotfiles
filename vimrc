@@ -1,22 +1,23 @@
 " Make sure you use single quotes
 call plug#begin()
 
-" guide
+" Guide:
 Plug 'sjl/gundo.vim'
 
 " Syntax:
 Plug 'sheerun/vim-polyglot'
 Plug 'justinmk/vim-syntax-extra'
+Plug 'leafgarland/typescript-vim'
 
 " Mine:
-" colorschemes:
+" Colorschemes:
 Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
 
-" dependencies
+" Dependencies:
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
-" tpope:
+" Tpope:
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 " Conflicts with nerdcommenter
@@ -26,14 +27,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" syntastic:
+" Syntastic:
 Plug 'vim-syntastic/syntastic'
-Plug 'feross/standard'
-Plug 'leafgarland/typescript-vim'
+" Plug 'w0rp/ale' " no yacc/bison support (yet) as far as i can tell
 
 " ycm:
 Plug 'valloric/youcompleteme', { 'do': './install.py' }
-
 Plug 'majutsushi/tagbar'
 
 " airline:
