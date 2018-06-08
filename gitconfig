@@ -83,17 +83,14 @@
 [includeIf "gitdir:~/src/git/bitbucket/"]
 	path = ~/src/git/bitbucket/.gitconfig
 
+[includeIf "gitdir:~/src/git/cfm/"]
+    path = ~/src/git/cfm/.gitconfig
+
 [includeIf "gitdir:~/src/git/fbihome/"]
 	path = ~/src/git/fbihome/.gitconfig
 
-[includeIf "gitdir:~/src/git/gin/"]
-	path = ~/src/git/gin/.gitconfig
-
 [includeIf "gitdir:~/src/git/github/"]
 	path = ~/src/git/github/.gitconfig
-
-[includeIf "gitdir:~/src/git/madl/"]
-	path = ~/src/git/madl/.gitconfig
 
 
 # http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/

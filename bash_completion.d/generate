@@ -6,23 +6,26 @@
 set -x
 
 ### docker-compose
-sudo curl -L https://raw.githubusercontent.com/docker/compose/"$(docker-compose version --short)"/contrib/completion/bash/docker-compose -o ./docker-compose
+curl -L https://raw.githubusercontent.com/docker/compose/"$(docker-compose version --short)"/contrib/completion/bash/docker-compose -o ./bash_completion.d/docker-compose
 
 ### docker-machine
 # TODO
 #sudo curl -L https://raw.githubusercontent.com/docker/machine/v0.13.0/contrib/completion/bash/docker-machine.bash -o /etc/bash_completion.d/docker-machine
 
 ### kubectl
-kubectl completion bash > kubectl
+kubectl completion bash > ./bash_completion.d/kubectl
 
 ### minikube
-minikube completion bash > minikube
+minikube completion bash > ./bash_completion.d/minikube
 
 ### ng
-ng completion > ng
+# `ng completions` has been removed -> sadpanda
+#ng completion > ./bash_completion.d/ng
 
 ### npm
-npm completion > npm
+npm completion > ./bash_completion.d/npm
 
 ### pip3
-pip3 completion -b > pip3
+pip3 completion -b > ./bash_completion.d/pip3
+
+set +x

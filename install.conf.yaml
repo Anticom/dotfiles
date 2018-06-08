@@ -23,9 +23,9 @@
     ~/.gitconfig: 'gitconfig'
     ~/.gitignore_global: 'gitignore_global'
     ~/src/git/bitbucket/.gitconfig: 'gitconfig.d/bitbucket'
+    ~/src/git/cfm/.gitconfig: 'gitconfig.d/cfm'
     ~/src/git/fbihome/.gitconfig: 'gitconfig.d/fbihome'
     ~/src/git/github/.gitconfig: 'gitconfig.d/github'
-    ~/src/git/madl/.gitconfig: 'gitconfig.d/madl'
     ~/.inputrc: 'inputrc'
     ~/.profile: 'profile'
     ~/.tmux.conf: tmux.conf
@@ -40,8 +40,9 @@
   - [mkdir -p ~/src, Creating src directory]
   - [mkdir -p ~/src/git, Creating src directory]
   - mkdir -p ~/src/git/bitbucket
+  - mkdir -p ~/src/git/cfm
   - mkdir -p ~/src/git/fbihome
   - mkdir -p ~/src/git/github
   - mkdir -p ~/src/svn
   - mkdir -p ~/src/test
-  # TODO: generate bash_completion
+  - [~/.bash_completion.d/generate, Generating tooling completions... This might take a while, please be patient]
