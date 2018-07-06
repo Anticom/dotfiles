@@ -1,15 +1,11 @@
 " Make sure you use single quotes
 call plug#begin()
 
-" Guide:
-Plug 'sjl/gundo.vim'
-
 " Syntax:
 Plug 'sheerun/vim-polyglot'
 Plug 'justinmk/vim-syntax-extra'
 Plug 'leafgarland/typescript-vim'
 
-" Mine:
 " Colorschemes:
 Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
@@ -48,6 +44,7 @@ Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 
 " other:
+Plug 'mbbill/undotree'
 Plug 'chrisbra/Recover.vim'
 Plug 'godlygeek/tabular'
 "Plug 'mhinz/vim-startify'
@@ -79,6 +76,9 @@ Plug 'leafgarland/typescript-vim'
 
 " Debuggers:
 Plug 'gilligan/vim-lldb'
+
+" Formatters:
+Plug 'chiel92/vim-autoformat'
 
 
 " Initialize plugin system
@@ -126,13 +126,6 @@ set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 
-" Turn Off Search Highlight:
-nnoremap <leader><space> :nohlsearch<CR>
-
-" Remap JK Keys To Keep Current Line Centered
-" nnoremap j jzz
-" nnoremap k kzz
-
 " Folding:
 "set foldenable          " enable folding
 "set foldlevelstart=10   " open most folds by default
@@ -141,10 +134,19 @@ nnoremap <leader><space> :nohlsearch<CR>
 "nnoremap <space> za
 "set foldmethod=indent   " fold based on indent level
 
+" Leader Shortcuts:
+let mapleader=","       " leader is comma
+
+" Turn Off Search Highlight:
+nnoremap <leader><space> :nohlsearch<CR>
+
+" Remap JK Keys To Keep Current Line Centered
+" nnoremap j jzz
+" nnoremap k kzz
+
 " Move To Beginning/End Of Line:
 nnoremap B ^
 nnoremap E $
-
 " $/^ Doesn't Do Anything:
 nnoremap $ <nop>
 nnoremap ^ <nop>
@@ -152,15 +154,19 @@ nnoremap ^ <nop>
 " Highlight Last Inserted Text:
 nnoremap gV `[v`]
 
-" Leader Shortcuts:
-let mapleader=","       " leader is comma
-
 " jk is escape
 "inoremap jk <esc>
 
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
+" leader mappings
+nnoremap <leader>w :FixWhitespace<CR>
+nnoremap <leader>f :Autoformat<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
 
+" -------------- Vanilla Vim --------------
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
 
 
 " ------------------ MINE -----------------
@@ -320,14 +326,3 @@ function! ToggleNumber()
     endif
 endfunc
 
-" strips trailing whitespace at the end of files. this
-" is called on buffer write in the autogroup above.
-function! <SID>StripTrailingWhitespaces()
-    " save last search & cursor position
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    let @/=_s
-    call cursor(l, c)
-endfunction

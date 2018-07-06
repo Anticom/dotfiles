@@ -6,7 +6,7 @@ alias tmux='tmux -u'  # to get rid of unicode rendering problem
 #alias ssh='ssh -4'
 
 ### save some pressious characters
-alias a='asciinema'
+alias a='asciinema rec'
 alias c='cd'
 alias f='fgrep'
 alias g='git'

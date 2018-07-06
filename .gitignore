@@ -1,8 +1,12 @@
+# vim internals
+vim/autoload/plug.vim.old   # we don't need a copy of previous VimPlug version
 # vim plugins must be build on machine individually
 vim/.netrwhist
 vim/plugged
 # Ignore vdwrap, since it's comming from a submodule
 bin/vdwrap
+bin/helm
+bin/minishift
 bin/clion
 bin/datagrip
 bin/idea

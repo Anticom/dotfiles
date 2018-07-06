@@ -18,6 +18,9 @@ kubectl completion bash > ./bash_completion.d/kubectl
 ### minikube
 minikube completion bash > ./bash_completion.d/minikube
 
+### minishift
+minishift completion bash > ./bash_completion.d/minishift
+
 ### ng
 # `ng completions` has been removed -> sadpanda
 #ng completion > ./bash_completion.d/ng

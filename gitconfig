@@ -66,6 +66,7 @@
     #tool = vimdiff
     tool = meld
 	conflictstyle = diff3
+	ff = false
 
 [mergetool]
 	promt = false

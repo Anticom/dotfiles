@@ -1,0 +1,7 @@
+#!/bin/bash
+
+### Mount cfmluc01
+sudo mount -t cifs -o credentials=~/.smbcredentials,uid=1000,gid=1000,vers=3.0 //cfmluc01/e /media/cfmluc01
+
+### Mount cfmlucms01
+sudo mount -t cifs -o credentials=~/.smbcredentials,uid=1000,gid=1000,vers=3.0 //cfmlucms01/e /media/cfmlucms01
